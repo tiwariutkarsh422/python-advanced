@@ -82,6 +82,47 @@ def main():
   print('foo---bar---->', re.search('foo-?bar', 'foo---bar'))
   print()
 
+  print('Explaining the lazy versions of +, *, ?:')
+  """ Here the * metacharacter follows a greedy approach to select the '>' character by selecting all the '>'
+      characters up until the end. To follow a non-greeedy approach we use lazy versions of '*' i.e '*?' """
+  print('<utk> <abc> <xyz>---->', re.search('<.*>', '<utk> <abc> <xyz>'))
+  print('<utk> <abc> <xyz>---->', re.search('<.*?>', '<utk> <abc> <xyz>'))
 
+  """ Following the greedy approach, the '?' will match the maximum possible occurence i.e one k. """
+  print('utk?---->', re.search('tk?', 'utkkkk')) #The '?' always follows either zero or one occurence of preceeding character
+  print('utkkkk---->', re.search('tk??', 'utkkkk'))
+
+  print('Explaining the use of {} acting as metacharacter')
+  """ {} act as a metacharacter only when they are of formats - {m,n}, {m,}, {,n}, {,} where m,n are lower and
+      upper bounds of number of occurences of a preeceding character"""
+  
+  print('utk---->', re.search('utk{2,5}', 'utk'))
+  print('utkk---->', re.search('utk{2,5}', 'utkk'))
+  print('utkkkkk---->', re.search('utk{2,5}', 'utkkkkk'))
+
+  """NOTE: If the occurences of {m,n} of a preeceding character is checked in between two strings than it takes a greedy
+     approach and matches n occurences of the character if the string has more than n occurences of that character"""
+  print('ukkkkkkt---->', re.search('uk{2,5}t', 'ukkkkkkt'))
+  print('utkkkkkk---->', re.search('utk{2,5}?', 'utkkkkkk')) #lazy version {m,n}?
+  
+  print('Grouping construct')
+  print('utkutkutk---->', re.search('(utk)+', 'utkutkutk')) #Treats the character in () as a single unit
+  print('utkutk utk---->', re.search('(utk)+', 'utk utk utk'))
+  print('utk---->', re.search('(utk)?', 'utk'))
+
+  print('123---->', re.search('(foo(bar)+)?(\d\d\d)?', '123')) #We can create complex regex with the help of grouping constructs
+  print('ukkkkkkt---->', re.search('(foo(bar)+)?(\d\d\d)?', 'foobar'))
+  print()
+  
+  print('Capturing grouping constructs')
+  print('utk,abc,def,123---->', re.search('(\w+),(\w+),(\w+),(\w+)', 'utk,abc,def,123'))
+  string = re.search('(\w+),(\w+),(\w+),(\w+)', 'utk,abc,def,123')
+  print('string.groups() will return:', string.groups()) #groups() will return a tuple containing all the matches separated by commas
+  print('string.group(index) will return:', string.group(1)) 
+  
+  #will return a single value of the tuple returned from groups() based on the index value passed
+  print('string.group(index) will return:', string.group(2)) 
+  print('string.group(index1, index2) will return:', string.group(1, 2))
+  
 if __name__ == '__main__':
   main()
