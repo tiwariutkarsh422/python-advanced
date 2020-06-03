@@ -148,7 +148,7 @@ print()
 names = ['utkarsh', 'tanmay', 'zaid', 'akhil', 'vamshi']
 print('Names:', names)
 
-first_two_chars = reduce(lambda x, y: x + y[:2], names)
+first_two_chars = reduce(lambda x, y: x + y[:2], names, '')
 print('Concatenation of first two characters:')
 print(first_two_chars)
 
